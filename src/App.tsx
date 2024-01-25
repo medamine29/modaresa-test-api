@@ -1,5 +1,7 @@
 import React from "react"
 import { createBrowserRouter,  createRoutesFromElements, Route, RouterProvider } from "react-router-dom"
+import { Provider } from 'react-redux';
+import { store } from "./store/index.ts";
 import MainLayout from "./layouts/MainLayout.tsx"
 import Appointments from "./pages/Appointments.tsx"
 import Clients from "./pages/Clients.tsx"
@@ -19,7 +21,9 @@ const App: React.FC = () => {
   )
 
   return (
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   )
 }
 
