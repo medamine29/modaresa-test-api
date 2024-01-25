@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Appointment } from "../../interfaces/index.ts"
+import { Appointment, ReadAppointment } from "../../interfaces/index.ts"
 
 const pause = (duration: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, duration));
@@ -17,7 +17,7 @@ const appointmentsApi = createApi({
   tagTypes: ["Appointment"],
   endpoints(builder) {
     return {
-      fetchAppointments: builder.query<Appointment[], void>({
+      fetchAppointments: builder.query<ReadAppointment[], void>({
         query: () => {
           return {
             url: '/all',

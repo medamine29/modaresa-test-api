@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode } from "react";
 import Button from "../components/Button.tsx";
 import classNames from "classnames";
 import { FormikHelpers, useFormik } from "formik"
@@ -11,8 +11,8 @@ import { formatClientsToOptions, formatStaffMembersToOptions, formatAppointmentF
 
 const AppointmentForm: React.FC = () => {
 
-  const { data: clientsData, isFetching: isFetchingClients } = useFetchClientsQuery()
-  const { data: clientsStaffMembers, isFetching: isFetchingSaffMembers } = useFetchStaffMembersQuery()
+  const { data: clientsData } = useFetchClientsQuery()
+  const { data: clientsStaffMembers } = useFetchStaffMembersQuery()
   const [addAppointment, { isLoading }] = useAddAppointmentMutation();
 
   const clientsOptions: Option[] = formatClientsToOptions(clientsData)
@@ -24,7 +24,7 @@ const AppointmentForm: React.FC = () => {
     actions.resetForm()
   }
 
-  const { values, errors, touched, isSubmitting, setFieldValue, handleBlur, handleChange, handleSubmit } = useFormik<AppointmentFormValues>({
+  const { values, errors, touched, isSubmitting, setFieldValue, handleSubmit } = useFormik<AppointmentFormValues>({
     initialValues: {
       startTime: new Date(),
       endTime: new Date()

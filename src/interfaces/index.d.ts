@@ -5,7 +5,6 @@ export interface Client {
 
 export interface ReadClient extends Required<Client> {}
 
-
 interface StaffMember {
   id?: number;
   firstname: string;
@@ -25,6 +24,14 @@ interface Appointment {
   endTime: Date;
   clientId: number;
   staffMemberId: number;
+}
+
+interface ReadAppointment {
+  id: number,
+  startTime: Date;
+  endTime: Date;
+  client: ReadClient;
+  staffMember: ReadStaffMember;
 }
 
 interface AppointmentFormValues {
