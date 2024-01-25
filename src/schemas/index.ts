@@ -23,7 +23,11 @@ export const createStaffMemberSchema = yup.object().shape({
 export const createAppointmentSchema = yup.object().shape({
   startTime: yup.date().required("This field is required"),
   endTime: yup.date().required("This field is required")
-    .test('is-greater-than-start', 'End time must be greater than start time', (value, context) => value < context.parent.startTime),
+    .test('is-greater-than-start', 'End time must be greater than start time', (value, context) => value > context.parent.startTime)
+    .test('is-same-day', 'End time must be on the same day as start time', function (value, { parent }) {
+      const startTime = parent.startTime;
+      return value && startTime && value.getDate() === startTime.getDate() && value.getMonth() === startTime.getMonth() && value.getFullYear() === startTime.getFullYear();
+    }),
   clientId: yup.number().required("This field is required"),
   staffMemberId: yup.number().required("This field is required")
 })
