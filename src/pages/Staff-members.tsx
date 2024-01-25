@@ -17,7 +17,7 @@ const StaffMembers = () => {
     <div className="w-full flex p-4">
 
       <div className="w-1/4">
-        <div className="text-lg underline font-bold"> Clients : </div>
+        <div className="text-lg underline font-bold"> Staff Members : </div>
         <div className="flex flex-col gap-2">
           { renderedStaffMembers }
         </div>

@@ -1,28 +1,32 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Button from "../components/Button.tsx";
 import classNames from "classnames";
 import { FormikHelpers, useFormik } from "formik"
-import { createClientSchema } from "../schemas/index.ts";
-import { useAddClientMutation } from "../store/index.ts"
+import { createAppointmentSchema } from "../schemas/index.ts";
+import { useAddAppointmentMutation } from "../store/index.ts"
 
-interface ClientFormValues {
-  name: string;
+interface AppointmentFormValues {
+  startTime: Date;
+  endTime: Date;
+  clientId?: number;
+  staffMemberId?: number;
 }
 
-const ClientForm: React.FC = () => {
+const AppointmentForm: React.FC = () => {
 
-  const [addClient, { isLoading }] = useAddClientMutation();
+  const [addAppointment, { isLoading }] = useAddAppointmentMutation();
 
-  const handleSubmitForm = async (values: ClientFormValues, actions: FormikHelpers<ClientFormValues>) => {
-    await addClient(values)
+  const handleSubmitForm = async (values: AppointmentFormValues, actions: FormikHelpers<AppointmentFormValues>) => {
+    await addAppointment(values)
     actions.resetForm()
   }
 
-  const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik<ClientFormValues>({
+  const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik<AppointmentFormValues>({
     initialValues: {
-      name: ''
+      startTime: new Date(),
+      endTime: new Date(),
     },
-    validationSchema: createClientSchema,
+    validationSchema: createAppointmentSchema,
     onSubmit: handleSubmitForm
   })
 
@@ -37,24 +41,24 @@ const ClientForm: React.FC = () => {
       className="w-full flex flex-col items-center p-4"
     >
       <div className="text-3xl my-4 font-bold w-4/5 md:w-3/5 text-center">
-        New Client 
+        New Appointment
       </div>
 
-      <div className={`${inputContainerClasses} ${ errors.name && touched.name ? 'border border-red-700 mb-8' : ''}`}>
+      <div className={`${inputContainerClasses} ${ errors.startTime && touched.startTime ? 'border border-red-700 mb-8' : ''}`}>
         <label className={inputLabelClasses}>
           Name
         </label>
 
         <input
           id="name"
-          value={values.name}
+          value={values.startTime}
           onChange={handleChange}
           onBlur={handleBlur}
           placeholder="Enter client name"
           className={inputClasses}
         />
 
-        { errors.name && touched.name && <div className={errorMessageClasses}> { errors.name } </div> }
+        { errors.startTime && touched.startTime && <div className={errorMessageClasses}> { errors.startTime as ReactNode } </div> }
       </div>
 
       <Button
@@ -63,11 +67,11 @@ const ClientForm: React.FC = () => {
         disabled={isSubmitting || isLoading}
         type="submit"
       >
-        Create Client
+        Create Appointment
       </Button>
 
     </form>
   );
 }
  
-export default ClientForm;
+export default AppointmentForm;

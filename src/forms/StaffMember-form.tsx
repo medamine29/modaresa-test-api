@@ -39,7 +39,7 @@ const StaffMemberForm: React.FC = () => {
       className="w-full flex flex-col items-center p-4"
     >
       <div className="text-3xl my-4 font-bold w-4/5 md:w-3/5 text-center">
-        Create 
+        New Staff Member 
       </div>
 
       <div className={`${inputContainerClasses} ${ errors.firstname && touched.firstname ? 'border border-red-700 mb-8' : ''}`}>
