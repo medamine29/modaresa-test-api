@@ -1,18 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { StaffMember, ReadStaffMember } from "../../interfaces/index.ts"
 
-const pause = (duration: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, duration));
-};
-
 const staffMembersApi = createApi({
   reducerPath: 'staffMembers',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3005/staff-members',
-    fetchFn: async (...args) => {
-      await pause(1000);
-      return fetch(...args)
-    },
+    baseUrl: 'http://localhost:3005/staff-members'
   }),
   tagTypes: ["Staff-Member"],
   endpoints(builder) {

@@ -3,16 +3,17 @@ import { useFetchAppointmentsQuery } from "../store/index.ts";
 import AppointmentForm from "../forms/Appointment-form.tsx";
 import { WeeklyCalendar } from 'react-rainbow-components';
 import { CalendarEvent } from "react-rainbow-components/components/WeeklyCalendar/index";
+import Skeleton from "../components/Skeleton.tsx"
 
 const Appointments: React.FC = () => {
 
   const { data, isFetching, error } = useFetchAppointmentsQuery()
 
-  if (error || !data) return <div> Une erreur s'est produite </div>
+  if (error) return <div> Une erreur s'est produite </div>
 
-  if (isFetching) return <div> fetching.... </div>
+  if (isFetching) return <div className="w-screen p-4"> <Skeleton times={1} className="w-full h-screen" /> </div>
 
-  const appintmentsEvents: Array<CalendarEvent> = data.map(appointment => ({
+  const appintmentsEvents: Array<CalendarEvent> | undefined = data?.map(appointment => ({
     id: appointment.id.toString(),
     title: "Meeting",
     description: "desc",
@@ -24,7 +25,6 @@ const Appointments: React.FC = () => {
     <div className="w-full flex flex-col p-4">
 
       <div className="w-full">
-        <div className="text-lg underline font-bold"> Appointments : </div>
         <div className="">
           <WeeklyCalendar
             events={appintmentsEvents}

@@ -1,18 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Client, ReadClient } from "../../interfaces";
 
-const pause = (duration: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, duration));
-};
-
 const clientsApi = createApi({
   reducerPath: 'clients',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3005/clients',
-    fetchFn: async (...args) => {
-      await pause(1000);
-      return fetch(...args)
-    },
+    baseUrl: 'http://localhost:3005/clients'
   }),
   tagTypes: ["Client"],
   endpoints(builder) {
