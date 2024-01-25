@@ -4,45 +4,46 @@ const pause = (duration: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, duration));
 };
 
-interface Client {
+interface StaffMember {
   id?: number;
-  name: string;
+  firstname: string;
+  lastname: string;
 }
 
-const clientsApi = createApi({
-  reducerPath: 'clients',
+const staffMembersApi = createApi({
+  reducerPath: 'staffMembers',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3005/clients',
+    baseUrl: 'http://localhost:3005/staff-members',
     fetchFn: async (...args) => {
       await pause(1000);
       return fetch(...args)
     },
   }),
-  tagTypes: ["Client"],
+  tagTypes: ["Staff-Member"],
   endpoints(builder) {
     return {
-      fetchClients: builder.query<Client[], void>({
+      fetchStaffMembers: builder.query<StaffMember[], void>({
         query: () => {
           return {
             url: '/all',
             method: 'GET',
           };
         },
-        providesTags: ['Client'],
+        providesTags: ['Staff-Member'],
       }),
-      addClient: builder.mutation<Client, Partial<Client>>({
-        query: (newClient) => {
+      addStaffMember: builder.mutation<StaffMember, Partial<StaffMember>>({
+        query: (newStaffMember) => {
           return {
             url: '/',
             method: 'POST',
-            body: newClient,
+            body: newStaffMember,
           };
         },
-        invalidatesTags: [ "Client" ],
+        invalidatesTags: [ "Staff-Member" ],
       }),
     };
   },
 });
 
-export const { useFetchClientsQuery, useAddClientMutation } = clientsApi;
-export { clientsApi };
+export const { useFetchStaffMembersQuery, useAddStaffMemberMutation } = staffMembersApi;
+export { staffMembersApi };
