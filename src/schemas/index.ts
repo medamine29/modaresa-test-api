@@ -28,7 +28,7 @@ export const createAppointmentSchema = yup.object().shape({
       const startTime = parent.startTime;
       return value && startTime && value.getDate() === startTime.getDate() && value.getMonth() === startTime.getMonth() && value.getFullYear() === startTime.getFullYear();
     }),
-  clientId: yup.number().required("This field is required"),
-  staffMemberId: yup.number().required("This field is required")
+  client: yup.object().required("This field is required"),
+  staffMember: yup.object().required("This field is required")
 })
 

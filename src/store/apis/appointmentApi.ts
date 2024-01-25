@@ -1,16 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Appointment } from "../../interfaces/index.ts"
 
 const pause = (duration: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, duration));
 };
-
-interface Appointment {
-  id?: number;
-  startTime: Date;
-  endTime: Date;
-  clientId: number;
-  staffMemberId: number;
-}
 
 const appointmentsApi = createApi({
   reducerPath: 'appointments',

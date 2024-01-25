@@ -1,29 +1,33 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import Button from "../components/Button.tsx";
 import classNames from "classnames";
 import { FormikHelpers, useFormik } from "formik"
 import { createAppointmentSchema } from "../schemas/index.ts";
-import { useAddAppointmentMutation } from "../store/index.ts"
+import { useAddAppointmentMutation, useFetchClientsQuery, useFetchStaffMembersQuery } from "../store/index.ts"
 import { DateTimePicker } from 'react-rainbow-components';
-
-interface AppointmentFormValues {
-  startTime?: Date;
-  endTime?: Date;
-  clientId?: number;
-  staffMemberId?: number;
-}
+import Dropdown from "../components/Dropdown.tsx";
+import { Option, AppointmentFormValues } from "../interfaces/index.ts";
+import { formatClientsToOptions, formatStaffMembersToOptions, formatAppointmentFormValues } from "../helpers/formatter.helper.ts";
 
 const AppointmentForm: React.FC = () => {
 
+  const { data: clientsData, isFetching: isFetchingClients } = useFetchClientsQuery()
+  const { data: clientsStaffMembers, isFetching: isFetchingSaffMembers } = useFetchStaffMembersQuery()
   const [addAppointment, { isLoading }] = useAddAppointmentMutation();
 
+  const clientsOptions: Option[] = formatClientsToOptions(clientsData)
+  const staffMembersOptions: Option[] = formatStaffMembersToOptions(clientsStaffMembers)
+
   const handleSubmitForm = async (values: AppointmentFormValues, actions: FormikHelpers<AppointmentFormValues>) => {
-    // await addAppointment(values)
+    const formattedValues = formatAppointmentFormValues(values)
+    await addAppointment(formattedValues)
     actions.resetForm()
   }
 
   const { values, errors, touched, isSubmitting, setFieldValue, handleBlur, handleChange, handleSubmit } = useFormik<AppointmentFormValues>({
     initialValues: {
+      startTime: new Date(),
+      endTime: new Date()
     },
     validationSchema: createAppointmentSchema,
     onSubmit: handleSubmitForm
@@ -73,6 +77,38 @@ const AppointmentForm: React.FC = () => {
         />
 
         { errors.endTime && touched.endTime && <div className={errorMessageClasses}> { errors.endTime as ReactNode } </div> }
+      </div>
+
+      <div className={`${inputContainerClasses} ${ errors.client && touched.client ? 'border border-red-700 mb-8' : ''}`}>
+        <label className={inputLabelClasses}>
+          Client
+        </label>
+
+        <Dropdown
+          value={values.client}
+          options={clientsOptions}
+          onChange={(value) => { setFieldValue("client", value) }}
+          className={inputClasses}
+          placeholder="Select client"
+        />
+
+        { errors.client && <div className={errorMessageClasses}> { errors.client as ReactNode } </div> }
+      </div>
+      
+      <div className={`${inputContainerClasses} ${ errors.staffMember && touched.staffMember ? 'border border-red-700 mb-8' : ''}`}>
+        <label className={inputLabelClasses}>
+          Client
+        </label>
+
+        <Dropdown
+          value={values.staffMember}
+          options={staffMembersOptions}
+          onChange={(value) => { setFieldValue("staffMember", value) }}
+          className={inputClasses}
+          placeholder="Select staff member"
+        />
+        
+        { errors.staffMember && <div className={errorMessageClasses}> { errors.staffMember as ReactNode } </div> }
       </div>
 
       <Button

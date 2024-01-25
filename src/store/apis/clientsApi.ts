@@ -1,13 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Client, ReadClient } from "../../interfaces";
 
 const pause = (duration: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, duration));
 };
-
-interface Client {
-  id?: number;
-  name: string;
-}
 
 const clientsApi = createApi({
   reducerPath: 'clients',
@@ -21,7 +17,7 @@ const clientsApi = createApi({
   tagTypes: ["Client"],
   endpoints(builder) {
     return {
-      fetchClients: builder.query<Client[], void>({
+      fetchClients: builder.query<ReadClient[], void>({
         query: () => {
           return {
             url: '/all',
@@ -30,8 +26,8 @@ const clientsApi = createApi({
         },
         providesTags: ['Client'],
       }),
-      addClient: builder.mutation<Client, Partial<Client>>({
-        query: (newClient) => {
+      addClient: builder.mutation<ReadClient, Partial<ReadClient>>({
+        query: (newClient: Client) => {
           return {
             url: '/',
             method: 'POST',

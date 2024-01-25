@@ -1,14 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { StaffMember, ReadStaffMember } from "../../interfaces/index.ts"
 
 const pause = (duration: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, duration));
 };
-
-interface StaffMember {
-  id?: number;
-  firstname: string;
-  lastname: string;
-}
 
 const staffMembersApi = createApi({
   reducerPath: 'staffMembers',
@@ -22,7 +17,7 @@ const staffMembersApi = createApi({
   tagTypes: ["Staff-Member"],
   endpoints(builder) {
     return {
-      fetchStaffMembers: builder.query<StaffMember[], void>({
+      fetchStaffMembers: builder.query<ReadStaffMember[], void>({
         query: () => {
           return {
             url: '/all',
@@ -31,8 +26,8 @@ const staffMembersApi = createApi({
         },
         providesTags: ['Staff-Member'],
       }),
-      addStaffMember: builder.mutation<StaffMember, Partial<StaffMember>>({
-        query: (newStaffMember) => {
+      addStaffMember: builder.mutation<ReadStaffMember, Partial<ReadStaffMember>>({
+        query: (newStaffMember: StaffMember) => {
           return {
             url: '/',
             method: 'POST',
