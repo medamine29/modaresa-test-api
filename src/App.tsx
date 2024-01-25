@@ -7,7 +7,6 @@ import Appointments from "./pages/Appointments.tsx"
 import Clients from "./pages/Clients.tsx"
 import StaffMembers from "./pages/Staff-members.tsx"
 
-
 const App: React.FC = () => {
 
   const router = createBrowserRouter(
