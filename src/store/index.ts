@@ -31,4 +31,4 @@ export type RootState = ReturnType<typeof combinedReducer>;
 export const useTypedDispatch = () => useDispatch<AppDispatch>();
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export { useFetchClientsQuery } from "./apis/clientsApi.ts"
+export { useFetchClientsQuery, useAddClientMutation } from "./apis/clientsApi.ts"

@@ -1,8 +1,9 @@
-import React, { ReactNode, useState } from "react";
+import React from "react";
 import Button from "../components/Button.tsx";
 import classNames from "classnames";
 import { FormikHelpers, useFormik } from "formik"
 import { createClientSchema } from "../schemas/index.ts";
+import { useAddClientMutation } from "../store/index.ts"
 
 interface ClientFormValues {
   name: string;
@@ -10,9 +11,10 @@ interface ClientFormValues {
 
 const ClientForm: React.FC = () => {
 
+  const [addClient, { isLoading }] = useAddClientMutation();
+
   const handleSubmitForm = async (values: ClientFormValues, actions: FormikHelpers<ClientFormValues>) => {
-    // todo : implement api logic
-    console.log("submitted !!")
+    await addClient(values)
     actions.resetForm()
   }
 
@@ -58,7 +60,7 @@ const ClientForm: React.FC = () => {
       <Button
         className="w-4/5 md:w-3/5 justify-center m-4 h-12"
         rounded
-        disabled={isSubmitting}
+        disabled={isSubmitting || isLoading}
         type="submit"
       >
         Create Client

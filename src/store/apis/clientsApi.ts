@@ -18,6 +18,7 @@ const clientsApi = createApi({
       return fetch(...args)
     },
   }),
+  tagTypes: ["Client"],
   endpoints(builder) {
     return {
       fetchClients: builder.query<Client[], void>({
@@ -27,10 +28,21 @@ const clientsApi = createApi({
             method: 'GET',
           };
         },
-      })
+        providesTags: ['Client'],
+      }),
+      addClient: builder.mutation<Client, Partial<Client>>({
+        query: (newClient) => {
+          return {
+            url: '/',
+            method: 'POST',
+            body: newClient,
+          };
+        },
+        invalidatesTags: [ "Client" ],
+      }),
     };
   },
 });
 
-export const { useFetchClientsQuery } = clientsApi;
+export const { useFetchClientsQuery, useAddClientMutation } = clientsApi;
 export { clientsApi };
